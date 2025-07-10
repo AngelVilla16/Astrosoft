@@ -1,0 +1,256 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASTRA: Sistema de Gestión de Citas y Expedientes Médicos</title>
+    <!-- Tailwind CSS CDN para estilos rápidos y responsivos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuración de Tailwind para usar el color Inter y nuevos colores ciberpunk -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'cyber-dark': '#08001A', /* Fondo principal muy oscuro, casi negro */
+                        'cyber-card': '#15002A', /* Fondo para secciones/tarjetas, un poco más claro */
+                        'neon-blue': '#00FFFF', /* Azul cian brillante */
+                        'neon-purple': '#FF00FF', /* Magenta brillante */
+                        'neon-green': '#00FF00', /* Verde neón */
+                        'neon-red': '#FF0000', /* Rojo neón para acentos de advertencia */
+                        'text-primary': '#E6E6FA', /* Blanco azulado para texto principal */
+                        'text-secondary': '#A0A0FF', /* Azul claro para texto secundario */
+                    },
+                    boxShadow: {
+                        'neon-blue-sm': '0 0 5px #00FFFF, 0 0 10px #00FFFF',
+                        'neon-blue-md': '0 0 10px #00FFFF, 0 0 20px #00FFFF',
+                        'neon-blue-lg': '0 0 20px #00FFFF, 0 0 40px #00FFFF',
+                        'neon-purple-sm': '0 0 5px #FF00FF, 0 0 10px #FF00FF',
+                        'neon-purple-md': '0 0 10px #FF00FF, 0 0 20px #FF00FF',
+                        'neon-purple-lg': '0 0 20px #FF00FF, 0 0 40px #FF00FF',
+                        'neon-green-sm': '0 0 5px #00FF00, 0 0 10px #00FF00',
+                        'neon-green-md': '0 0 10px #00FF00, 0 0 20px #00FF00',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Enlace a la fuente Inter de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth; /* Desplazamiento suave al hacer clic en enlaces de anclaje */
+            background-color: #08001A; /* Fondo principal */
+            position: relative; /* Necesario para pseudo-elementos */
+            overflow-x: hidden; /* Evitar scroll horizontal por efectos */
+        }
+
+        /* Efecto de fondo espacial/ciberpunk */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                    radial-gradient(circle at 10% 20%, rgba(0, 255, 255, 0.1) 0%, transparent 50%), /* Nebulosa cian */
+                    radial-gradient(circle at 90% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 50%), /* Nebulosa magenta */
+                    repeating-linear-gradient(0deg, rgba(0, 255, 255, 0.05) 0px, rgba(0, 255, 255, 0.05) 1px, transparent 1px, transparent 40px), /* Líneas de cuadrícula sutiles */
+                    repeating-linear-gradient(90deg, rgba(255, 0, 255, 0.05) 0px, rgba(255, 0, 255, 0.05) 1px, transparent 1px, transparent 40px); /* Líneas de cuadrícula sutiles */
+            z-index: -1; /* Detrás del contenido */
+            opacity: 0.8;
+        }
+
+        /* Estilos para el botón de volver arriba */
+        #scrollToTopBtn {
+            display: none; /* Oculto por defecto */
+            position: fixed; /* Fijo en la pantalla */
+            bottom: 20px; /* 20px desde la parte inferior */
+            right: 30px; /* 30px desde la derecha */
+            z-index: 99; /* Asegura que esté por encima de otros elementos */
+            border: none; /* Sin borde */
+            outline: none; /* Sin contorno al enfocar */
+            background-color: #00FFFF; /* Color de fondo neon-blue */
+            color: #08001A; /* Texto oscuro para contraste */
+            cursor: pointer; /* Cursor de puntero */
+            padding: 15px; /* Relleno */
+            border-radius: 50%; /* Botón circular */
+            font-size: 18px; /* Tamaño de fuente */
+            box-shadow: 0 0 15px #00FFFF, 0 0 25px #00FFFF; /* Sombra de neón intensa */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease; /* Transición suave */
+        }
+
+        #scrollToTopBtn:hover {
+            background-color: #FF00FF; /* Color de fondo neon-purple al pasar el ratón */
+            box-shadow: 0 0 20px #FF00FF, 0 0 30px #FF00FF; /* Sombra de neón más intensa */
+            transform: scale(1.05); /* Pequeña escala al pasar el ratón */
+        }
+
+        /* Estilos para el efecto de brillo en los títulos */
+        .neon-text-glow {
+            text-shadow: 0 0 8px #00FFFF, 0 0 15px #00FFFF, 0 0 25px #00FFFF;
+        }
+
+        .neon-purple-text-glow {
+            text-shadow: 0 0 8px #FF00FF, 0 0 15px #FF00FF, 0 0 25px #FF00FF;
+        }
+
+        .neon-green-text-glow {
+            text-shadow: 0 0 8px #00FF00, 0 0 15px #00FF00, 0 0 25px #00FF00;
+        }
+
+        /* Borde animado para secciones */
+        .animated-border {
+            position: relative;
+            border: 1px solid transparent;
+            background-clip: padding-box;
+            background-origin: border-box;
+        }
+
+        .animated-border::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            border-radius: 0.75rem; /* rounded-xl */
+            background: linear-gradient(45deg, #00FFFF, #FF00FF, #00FFFF);
+            z-index: -1;
+            opacity: 0.3;
+            filter: blur(5px);
+            transition: opacity 0.3s ease;
+        }
+
+        .animated-border:hover::before {
+            opacity: 0.6;
+        }
+
+        /* Efecto de glitch sutil en el logo */
+        .glitch-effect {
+            animation: glitch 2s infinite alternate;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+    </style>
+</head>
+<body class="bg-cyber-dark text-text-primary leading-relaxed">
+
+<!-- Encabezado de la página -->
+<header class="bg-gradient-to-r from-purple-950 to-blue-950 text-white p-6 shadow-neon-blue-lg rounded-b-lg">
+    <div class="container mx-auto text-center flex flex-col items-center">
+        <!-- Logo de Astrosoft con efecto glitch -->
+        <img src="http://googleusercontent.com/file_content/1" alt="Logo de Astrosoft" class="h-28 w-28 md:h-40 md:w-40 mb-4 rounded-full shadow-neon-blue-md glitch-effect">
+        <!-- Nombre de Astrosoft -->
+        <h1 class="text-5xl md:text-6xl font-extrabold mb-2 text-neon-blue neon-text-glow">ASTROSOFT</h1>
+        <!-- Subtítulo del sistema -->
+        <p class="text-xl md:text-2xl font-light text-text-secondary">Sistema de Gestión de Citas y Expedientes Médicos</p>
+    </div>
+</header>
+
+<!-- Barra de Navegación -->
+<nav class="bg-cyber-card p-4 text-white shadow-neon-purple-sm border-b border-neon-purple border-opacity-40">
+    <div class="container mx-auto flex flex-col md:flex-row justify-center space-y-2 md:space-y-0 md:space-x-8">
+        <a href="#conocenos" class="text-center text-lg font-semibold text-neon-blue hover:text-neon-green transition duration-300 py-2 px-4 rounded-md hover:bg-gray-900 hover:shadow-neon-blue-sm">Conócenos</a>
+        <a href="#nuestros-productos" class="text-center text-lg font-semibold text-neon-blue hover:text-neon-green transition duration-300 py-2 px-4 rounded-md hover:bg-gray-900 hover:shadow-neon-blue-sm">Nuestros Productos</a>
+    </div>
+</nav>
+
+<!-- Contenido principal de la página -->
+<main class="container mx-auto p-6 md:p-8 lg:p-10">
+
+    <!-- Sección Quiénes Somos (Conócenos) -->
+    <section id="conocenos" class="bg-cyber-card p-6 rounded-xl shadow-neon-blue-md mb-8 animated-border">
+        <h2 class="text-3xl font-bold text-neon-blue mb-4 neon-text-glow">✨ Quiénes Somos: Astrosoft</h2>
+        <p class="text-lg leading-relaxed mb-4 text-text-primary">
+            Astrosoft (Astros Software Labs) es un proyecto universitario que nace con la visión de acercar la tecnología a los servicios de salud a través del desarrollo de software moderno, funcional y accesible. Formada por un equipo de estudiantes comprometidos con la innovación, Astrosoft busca ofrecer soluciones digitales que respondan a las necesidades reales de pequeños consultorios, clínicas comunitarias y centros médicos.
+        </p>
+        <p class="text-lg leading-relaxed mb-4 text-text-primary">
+            Inspirados en la precisión y claridad del universo, Astrosoft combina el enfoque astronómico con la tecnología para construir herramientas intuitivas que fortalezcan la relación entre pacientes y profesionales de la salud. Nuestro trabajo refleja el compromiso por crear software confiable, adaptable y con un impacto positivo en la gestión de la atención médica.
+        </p>
+        <p class="text-lg leading-relaxed font-semibold text-neon-green">
+            ASTRA, nuestro primer producto, representa el inicio de una travesía hacia sistemas de salud más organizados, conectados y eficientes.
+        </p>
+    </section>
+
+    <!-- Sección Misión de Astrosoft -->
+    <section class="bg-cyber-card p-6 rounded-xl shadow-neon-purple-md mb-8 animated-border">
+        <h2 class="text-3xl font-bold text-neon-purple mb-4 neon-purple-text-glow">🌟 Misión de Astrosoft</h2>
+        <p class="text-lg leading-relaxed text-text-primary">
+            Desarrollar soluciones tecnológicas innovadoras, accesibles y centradas en el usuario, que mejoren la eficiencia de los servicios de salud y potencien la gestión médica a través de software intuitivo, confiable y moderno.
+        </p>
+    </section>
+
+    <!-- Sección Visión de Astrosoft -->
+    <section class="bg-cyber-card p-6 rounded-xl shadow-neon-green-md mb-8 animated-border">
+        <h2 class="text-3xl font-bold text-neon-green mb-4 neon-green-text-glow">🚀 Visión de Astrosoft</h2>
+        <p class="text-lg leading-relaxed text-text-primary">
+            Ser una empresa líder en el desarrollo de software médico en Latinoamérica, reconocida por ofrecer herramientas digitales de alta calidad, seguras y orientadas a la mejora continua del bienestar y la atención al paciente.
+        </p>
+    </section>
+
+    <!-- Sección Nuestros Productos -->
+    <section id="nuestros-productos" class="bg-cyber-card p-6 rounded-xl shadow-neon-blue-md mb-8 animated-border">
+        <h2 class="text-3xl font-bold text-neon-blue mb-4 neon-text-glow">📦 Nuestros Productos</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Tarjeta de Producto ASTRA -->
+            <div class="bg-gray-900 p-6 rounded-lg shadow-neon-blue-sm hover:shadow-neon-blue-md transition duration-300 transform hover:-translate-y-2 border border-neon-blue border-opacity-60">
+                <h3 class="text-2xl font-semibold text-neon-blue mb-2">
+                    <a href="#astra-detalles" class="hover:underline cursor-pointer neon-text-glow">ASTRA</a>
+                </h3>
+                <p class="text-lg text-text-secondary">Sistema de Gestión de Citas y Expedientes Médicos.</p>
+                <p class="text-sm text-gray-400 mt-2">Haz clic para ver más detalles.</p>
+            </div>
+            <!-- Aquí se pueden añadir futuros productos -->
+        </div>
+    </section>
+
+</main>
+
+<!-- Botón para volver arriba -->
+<button onclick="topFunction()" id="scrollToTopBtn" title="Volver arriba">↑</button>
+
+<!-- Pie de página -->
+<footer class="bg-cyber-card text-text-secondary p-6 text-center rounded-t-lg shadow-neon-purple-sm border-t border-neon-purple border-opacity-40">
+    <div class="container mx-auto">
+        <p>&copy; 2025 Astrosoft. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<script>
+    // Obtener el botón
+    let mybutton = document.getElementById("scrollToTopBtn");
+
+    // Cuando el usuario hace scroll hacia abajo 20px desde la parte superior del documento, muestra el botón
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    // Cuando el usuario hace clic en el botón, se desplaza a la parte superior del documento
+    function topFunction() {
+        document.body.scrollTop = 0; // Para Safari
+        document.documentElement.scrollTop = 0; // Para Chrome, Firefox, IE y Opera
+    }
+</script>
+
+</body>
+</html>
+
