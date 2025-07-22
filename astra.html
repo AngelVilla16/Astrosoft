@@ -1,0 +1,336 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASTRA: Detalles del Proyecto</title>
+  <!-- Tailwind CSS CDN para estilos rápidos y responsivos -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Configuración de Tailwind para colores y sombras del nuevo estilo elegante -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            'elegant-dark-bg': '#0A192F', /* Fondo principal muy oscuro, azulado */
+            'elegant-card-bg': '#172A45', /* Fondo para secciones/tarjetas, ligeramente más claro */
+            'elegant-accent': '#00C2FF', /* Azul vibrante para acentos sutiles */
+            'elegant-text-primary': '#CCD6F6', /* Texto claro general */
+            'elegant-text-secondary': '#8892B0', /* Texto secundario/detalles */
+          },
+          boxShadow: {
+            'elegant-soft': '0 8px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 194, 255, 0.15)', /* Sombra suave y difusa con un toque de brillo azul */
+            'elegant-header': '0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 194, 255, 0.25)', /* Sombra más pronunciada para el encabezado */
+            'elegant-card-hover': '0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 194, 255, 0.3)',
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Enlace a la fuente Inter de Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+      background-color: #0A192F; /* Main dark background */
+      min-height: 100vh; /* Ensures background covers full height */
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Subtle futuristic/technical background pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+              linear-gradient(to right, rgba(0, 194, 255, 0.01) 1px, transparent 1px), /* Subtle vertical lines */
+              linear-gradient(to bottom, rgba(0, 194, 255, 0.01) 1px, transparent 1px); /* Subtle horizontal lines */
+      background-size: 30px 30px; /* Smaller grid size */
+      z-index: -1;
+      opacity: 0.8;
+    }
+
+    /* Styles for the scroll-to-top button */
+    #scrollToTopBtn {
+      display: none; /* Hidden by default */
+      position: fixed; /* Fixed position on screen */
+      bottom: 20px; /* 20px from bottom */
+      right: 30px; /* 30px from right */
+      z-index: 99; /* Ensures it's above other elements */
+      border: none; /* No border */
+      outline: none; /* No outline on focus */
+      background-color: #00C2FF; /* Accent color */
+      color: #0A192F; /* Dark text for contrast */
+      cursor: pointer; /* Pointer cursor */
+      padding: 15px; /* Padding */
+      border-radius: 50%; /* Circular button */
+      font-size: 18px; /* Font size */
+      box-shadow: 0 4px 15px rgba(0, 194, 255, 0.5); /* Shadow with accent color */
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Smooth transition */
+    }
+
+    #scrollToTopBtn:hover {
+      background-color: #0099CC; /* Darker shade on hover */
+      transform: scale(1.05); /* Slight scale on hover */
+      box-shadow: 0 6px 20px rgba(0, 194, 255, 0.7);
+    }
+
+    /* Style for the main header with subtle gradient */
+    .header-style {
+      background: radial-gradient(circle at 50% 120%, rgba(0, 194, 255, 0.15) 0%, transparent 50%), #172A45; /* Subtle gradient at the bottom */
+      border-bottom-left-radius: 2rem; /* Rounded corners */
+      border-bottom-right-radius: 2rem;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 194, 255, 0.25); /* Pronounced shadow with subtle glow */
+    }
+
+    /* Style for content cards */
+    .content-card {
+      background-color: #172A45; /* Card background */
+      border-radius: 1.5rem; /* Rounded corners */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 5px rgba(0, 194, 255, 0.1); /* Shadow with subtle glow */
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(0, 194, 255, 0.1); /* Subtle accent border */
+    }
+
+    .content-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 0 8px rgba(0, 194, 255, 0.2);
+      border-color: rgba(0, 194, 255, 0.4); /* More visible border on hover */
+    }
+
+    /* Style for navigation buttons/links */
+    .nav-link-style {
+      background-color: transparent; /* Transparent background */
+      border-radius: 0.5rem; /* Slightly rounded */
+      padding: 0.75rem 1.5rem;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      border: 1px solid transparent; /* Initial transparent border */
+      position: relative; /* For the subtle "underline" effect */
+    }
+
+    .nav-link-style::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 50%;
+      background-color: #00C2FF; /* Accent color */
+      transition: width 0.3s ease, left 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .nav-link-style:hover::after {
+      width: 80%; /* Expands to 80% width */
+    }
+
+    /* Style for section titles */
+    .section-title {
+      color: #00C2FF; /* Accent color for titles */
+      font-weight: 700; /* Bold */
+      letter-spacing: 0.08em; /* Subtle spacing for a modern look */
+      text-transform: uppercase; /* Uppercase for a more technical look */
+    }
+  </style>
+</head>
+<body class="bg-elegant-dark-bg text-elegant-text-primary leading-relaxed">
+
+<!-- Encabezado de la página -->
+<header class="header-style p-8 text-center">
+  <div class="container mx-auto flex flex-col items-center">
+    <!-- Logo de Astrosoft -->
+    <img src="Astrosoft.jpg" alt="Logo de Astrosoft" class="h-24 w-24 md:h-32 md:w-32 mb-4 rounded-full shadow-elegant-card">
+    <!-- Título del Proyecto ASTRA -->
+    <h1 class="text-5xl md:text-7xl font-extrabold mb-2 text-elegant-text-primary">ASTRA</h1>
+    <p class="text-xl md:text-3xl font-light text-elegant-text-secondary">Sistema de Gestión de Citas y Expedientes Médicos</p>
+  </div>
+</header>
+
+<!-- Barra de Navegación -->
+<nav class="bg-elegant-dark-bg py-4 shadow-elegant-header">
+  <div class="container mx-auto flex flex-col md:flex-row justify-center space-y-3 md:space-y-0 md:space-x-8">
+    <!-- Enlace para volver a la página principal de Astrosoft -->
+    <a href="index.html#nuestros-productos" class="text-center text-xl font-semibold text-elegant-text-primary nav-link-style">← Volver a Astrosoft</a>
+  </div>
+</nav>
+
+<!-- Contenido principal de la página -->
+<main class="container mx-auto p-6 md:p-8 lg:p-10">
+
+  <!-- Sección de Objetivo Principal -->
+  <section id="objetivo" class="content-card p-6 md:p-8 lg:p-10 mb-8">
+    <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">🎯 Objetivo Principal</h2>
+    <p class="text-lg leading-relaxed text-elegant-text-primary">
+      ASTRA busca ofrecer una solución automatizada e intuitiva para clínicas pequeñas o consultorios,
+      facilitando el registro, la consulta y la gestión de:
+    </p>
+    <ul class="list-disc list-inside mt-4 space-y-2 text-lg text-elegant-text-primary">
+      <li>Información de pacientes.</li>
+      <li>Citas médicas.</li>
+      <li>Expedientes clínicos.</li>
+      <li>Usuarios del sistema (personal médico, recepcionistas, administradores).</li>
+    </ul>
+  </section>
+
+  <!-- Sección de Componentes del Sistema -->
+  <section id="componentes" class="content-card p-6 md:p-8 lg:p-10 mb-8">
+    <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">🧱 Componentes del Sistema</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+        <h3 class="text-xl font-semibold text-elegant-accent mb-2">Interfaz Gráfica (Windows Forms)</h3>
+        <p class="text-elegant-text-secondary">Una interfaz de usuario amigable y funcional, diseñada para el usuario final.</p>
+      </div>
+      <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+        <h3 class="text-xl font-semibold text-elegant-accent mb-2">Base de Datos Local (SQL)</h3>
+        <p class="text-elegant-text-secondary">Sistema de almacenamiento persistente, embebido dentro de la aplicación.</p>
+      </div>
+      <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft col-span-1 md:col-span-2">
+        <h3 class="text-xl font-semibold text-elegant-accent mb-2">Módulo de Gestión</h3>
+        <ul class="list-disc list-inside ml-4 space-y-1 text-elegant-text-secondary">
+          <li>Registro e inicio de sesión de usuarios (con contraseñas cifradas en SHA-256).</li>
+          <li>Operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para pacientes.</li>
+          <li>Registro y control de citas.</li>
+          <li>Gestión de expedientes médicos (prescripciones, historial, etc.).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de Perfiles de Usuario -->
+  <section id="perfiles" class="content-card p-6 md:p-8 lg:p-10 mb-8">
+    <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">👤 Perfiles de Usuario</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+        <h3 class="text-xl font-semibold text-elegant-accent mb-2">Recepcionista</h3>
+        <p class="text-elegant-text-secondary">Encargado de agendar, consultar y cancelar citas.</p>
+      </div>
+      <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+        <h3 class="text-xl font-semibold text-elegant-accent mb-2">Médico</h3>
+        <p class="text-elegant-text-secondary">Visualiza historial, receta medicamentos. También realiza las funciones de recepcionista y administrador.</p>
+      </div>
+      <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+        <h3 class="text-xl font-semibold text-elegant-accent mb-2">Administrador</h3>
+        <p class="text-elegant-text-secondary">Gestiona usuarios y configuración general.</p>
+      </div>
+      <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+        <h3 class="text-xl font-semibold text-elegant-accent mb-2">Paciente (futuro)</h3>
+        <p class="text-elegant-text-secondary">Podría acceder a su historial desde una app o portal.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de Seguridad -->
+  <section id="seguridad" class="content-card p-6 md:p-8 lg:p-10 mb-8">
+    <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">🔐 Seguridad</h2>
+    <ul class="list-disc list-inside space-y-2 text-lg text-elegant-text-primary">
+      <li><strong class="text-elegant-accent">Login Protegido:</strong> Las contraseñas de los usuarios se cifran utilizando el algoritmo SHA-256.</li>
+      <li><strong class="text-elegant-accent">Validación de Credenciales:</strong> Verificación rigurosa de las credenciales al iniciar sesión.</li>
+    </ul>
+  </section>
+
+  <!-- Sección de Tecnologías -->
+  <section id="tecnologias" class="content-card p-6 md:p-8 lg:p-10 mb-8">
+    <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">🧩 Tecnologías</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+        <h3 class="text-xl font-semibold text-elegant-accent mb-2">C# y .NET Core</h3>
+        <p class="text-elegant-text-secondary">Lenguaje de programación y framework principal.</p>
+      </div>
+      <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+        <h3 class="text-xl font-semibold text-elegant-accent mb-2">Windows Forms</h3>
+        <p class="text-elegant-text-secondary">Para la construcción de la interfaz gráfica de usuario.</p>
+      </div>
+      <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+        <h3 class="text-xl font-semibold text-elegant-accent mb-2">SQL</h3>
+        <p class="text-elegant-text-secondary">Para la gestión de la base de datos local.</p>
+      </div>
+      <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+        <h3 class="text-xl font-semibold text-elegant-accent mb-2">GitHub</h3>
+        <p class="text-elegant-text-secondary">Utilizado para el control de versiones del código fuente.</p>
+      </div>
+      <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+        <h3 class="text-xl font-semibold text-elegant-accent mb-2">Herramientas de Modelado</h3>
+        <p class="text-elegant-text-secondary">ArgoUML y DB Designer para el diseño de los diagramas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de Tutorial de Uso -->
+  <section id="tutorial" class="content-card p-6 md:p-8 lg:p-10 mb-8">
+    <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">📺 Tutorial de Uso</h2>
+    <p class="text-lg leading-relaxed mb-4 text-elegant-text-primary">
+      Aquí podrás encontrar un video tutorial detallado sobre cómo utilizar ASTRA. ¡Pronto disponible!
+    </p>
+    <!-- Placeholder para el video de YouTube -->
+    <div class="relative w-full" style="padding-top: 56.25%;">
+      <iframe class="absolute top-0 left-0 w-full h-full rounded-lg shadow-elegant-soft"
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+      </iframe>
+    </div>
+    <p class="text-sm text-elegant-text-secondary mt-4 text-center">
+      (El video tutorial de uso de ASTRA se cargará aquí próximamente.)
+    </p>
+  </section>
+
+  <!-- Sección de Estado Actual -->
+  <section id="estado-actual" class="content-card p-6 md:p-8 lg:p-10 mb-8">
+    <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">✅ Estado Actual</h2>
+    <p class="text-lg leading-relaxed mb-4 text-elegant-text-primary">
+      El proyecto ASTRA se encuentra en el siguiente estado de desarrollo:
+    </p>
+    <ul class="list-disc list-inside space-y-2 text-lg text-elegant-text-secondary">
+      <li>El módulo CRUD está completamente funcional, incluyendo la gestión de citas.</li>
+      <li>Actualmente estamos trabajando en el desarrollo del módulo de expedientes clínicos.</li>
+    </ul>
+  </section>
+
+</main>
+
+<!-- Botón para volver arriba -->
+<button onclick="topFunction()" id="scrollToTopBtn" title="Volver arriba">↑</button>
+
+<!-- Pie de página -->
+<footer class="bg-elegant-card-bg text-elegant-text-secondary p-6 text-center rounded-t-2xl shadow-elegant-card border-t border-elegant-accent border-opacity-30">
+  <div class="container mx-auto">
+    <p>&copy; 2025 Astrosoft. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<script>
+  // Get the button
+  let mybutton = document.getElementById("scrollToTopBtn");
+
+  // When the user scrolls down 20px from the top of the document, show the button
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      mybutton.style.display = "block";
+    } else {
+      mybutton.style.display = "none";
+    }
+  }
+
+  // When the user clicks on the button, scroll to the top of the document
+  function topFunction() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  }
+</script>
+
+</body>
+</html>
+
+
+
