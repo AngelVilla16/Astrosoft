@@ -139,6 +139,26 @@
       letter-spacing: 0.08em; /* Subtle spacing for a modern look */
       text-transform: uppercase; /* Uppercase for a more technical look */
     }
+
+    /* Style for the download button */
+    .download-button {
+      display: inline-block;
+      background-color: #00C2FF; /* Accent color */
+      color: #0A192F; /* Dark text for contrast */
+      padding: 1rem 2.5rem;
+      border-radius: 0.75rem; /* Rounded corners */
+      font-size: 1.25rem; /* Larger font size */
+      font-weight: 600; /* Semi-bold */
+      text-decoration: none; /* No underline */
+      box-shadow: 0 4px 15px rgba(0, 194, 255, 0.5); /* Shadow with accent color */
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .download-button:hover {
+      background-color: #0099CC; /* Darker shade on hover */
+      transform: translateY(-3px); /* Slight lift on hover */
+      box-shadow: 0 6px 20px rgba(0, 194, 255, 0.7);
+    }
   </style>
 </head>
 <body class="bg-elegant-dark-bg text-elegant-text-primary leading-relaxed">
@@ -164,6 +184,19 @@
 
 <!-- Contenido principal de la página -->
 <main class="container mx-auto p-6 md:p-8 lg:p-10">
+
+  <!-- Sección de Descarga de la Aplicación -->
+  <section id="descarga" class="content-card p-6 md:p-8 lg:p-10 mb-8 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">⬇️ Descarga ASTRA</h2>
+    <p class="text-lg leading-relaxed mb-8 text-elegant-text-primary">
+      Obtén la última versión de la aplicación de escritorio ASTRA para Windows.
+    </p>
+    <!-- ¡IMPORTANTE! Reemplaza este 'href' con la URL pública de tu archivo .exe -->
+    <a href="publish.htm" class="download-button" download="ASTRA_Installer.exe">Descargar ASTRA</a>
+    <p class="text-sm text-elegant-text-secondary mt-4">
+      (Haz clic en "Descargar ASTRA" para obtener el instalador. Este enlace debe ser una URL pública para funcionar en línea.)
+    </p>
+  </section>
 
   <!-- Sección de Objetivo Principal -->
   <section id="objetivo" class="content-card p-6 md:p-8 lg:p-10 mb-8">
@@ -331,6 +364,3 @@
 
 </body>
 </html>
-
-
-
