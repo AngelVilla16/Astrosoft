@@ -159,6 +159,18 @@
       transform: translateY(-3px); /* Slight lift on hover */
       box-shadow: 0 6px 20px rgba(0, 194, 255, 0.7);
     }
+    .pdf-link {
+      display:inline-block;
+      background-color: #00C2FF;
+      color: #0A192F;
+      padding: 1rem 2.5rem;
+      border-radius: 0.75rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(0, 194, 255, 0.5);
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    }
   </style>
 </head>
 <body class="bg-elegant-dark-bg text-elegant-text-primary leading-relaxed">
@@ -269,6 +281,18 @@
       <li><strong class="text-elegant-accent">Login Protegido:</strong> Las contraseñas de los usuarios se cifran utilizando el algoritmo SHA-256.</li>
       <li><strong class="text-elegant-accent">Validación de Credenciales:</strong> Verificación rigurosa de las credenciales al iniciar sesión.</li>
     </ul>
+<!-- Seccion de terminos de licencia -->
+  </section>
+  <section id="Eula" class="content-card p-6 md:p-8 lg:p-10 mb-8">
+    <h2 class="text-3xl md:text-4xl font-bold section-title mb-6"> 📄 EULA </h2>
+    <ul class="list-disc list-inside space-y-2 text-lg text-elegant-text-primary">
+    <li> <strong class="text-elegant-accent">Terminos de uso de la licencia de nuestro software:</strong> Importante leer antes de descargar Astra! </li>
+    <a href="EULA.pdf" class="pdf-link" download>
+    EULA en formato pdf para descargar.
+    </a>
+
+    </ul>
+
   </section>
 
   <!-- Sección de Tecnologías -->
@@ -326,7 +350,7 @@
     </p>
     <ul class="list-disc list-inside space-y-2 text-lg text-elegant-text-secondary">
       <li>Su primera version de release: 1.12 finalmente desplegada.</li>
-      
+
     </ul>
   </section>
 
