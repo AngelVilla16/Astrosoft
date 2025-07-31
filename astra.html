@@ -171,6 +171,28 @@
       box-shadow: 0 4px 15px rgba(0, 194, 255, 0.5);
       transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     }
+    .pdf-link:hover{
+      background-color: #0099CC;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 194, 255, 0.7);
+    }
+    .doc-pdf{
+      display:inline-block;
+      background-color: #00C2FF;
+      color: #0A192F;
+      padding: 1rem 2.5rem;
+      border-radius: 0.75rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(0, 194, 255, 0.5);
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    }
+    .doc-pdf:hover{
+      background-color: #0099CC;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 194, 255, 0.7);
+    }
   </style>
 </head>
 <body class="bg-elegant-dark-bg text-elegant-text-primary leading-relaxed">
@@ -353,7 +375,21 @@
 
     </ul>
   </section>
+<!-- Seccion de documentacion-->
+  <section id="Documentacion" class="content-card p-6 md:p-8 lg>p-10 mb-8">
+    <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">Documentacion de Astra (Leer EULA)</h2>
+    <p class="text-lg leading-relaxed mb-4 text-elegant-text-primary">
+      Aqui se encuentra la documentacion de Astra, favor de leer el EULA antes de hacer alguna interaccion, modificacion o alteracion del proyecto.
+    </p>
+    <ul class="list-disc list-inside space-y-2 text-lg text-elegant-text-primary">
+      <li> <strong class="text-elegant-accent">Documentacion del proyecto:</strong> Importante leer EULA </li>
+      <a href="Documentacion%20de%20Astra.pdf" class="doc-pdf" download>
+        Documentacion en formato pdf para descargar.
+      </a>
 
+    </ul>
+
+  </section>
 </main>
 
 <!-- Botón para volver arriba -->
