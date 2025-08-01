@@ -1,0 +1,333 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVA: Registro de Alumnos</title>
+    <!-- Tailwind CSS CDN para estilos rápidos y responsivos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configuración de Tailwind para colores y sombras del nuevo estilo elegante -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'elegant-dark-bg': '#0A192F', /* Fondo principal muy oscuro, azulado */
+                        'elegant-card-bg': '#172A45', /* Fondo para secciones/tarjetas, ligeramente más claro */
+                        'elegant-accent': '#00C2FF', /* Azul vibrante para acentos sutiles */
+                        'elegant-text-primary': '#CCD6F6', /* Texto claro general */
+                        'elegant-text-secondary': '#8892B0', /* Texto secundario/detalles */
+                    },
+                    boxShadow: {
+                        'elegant-soft': '0 8px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 194, 255, 0.15)', /* Sombra suave y difusa con un toque de brillo azul */
+                        'elegant-header': '0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 194, 255, 0.25)', /* Sombra más pronunciada para el encabezado */
+                        'elegant-card-hover': '0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 194, 255, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Enlace a la fuente Inter de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+            background-color: #0A192F; /* Main dark background */
+            min-height: 100vh; /* Ensures background covers full height */
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Subtle futuristic/technical background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                    linear-gradient(to right, rgba(0, 194, 255, 0.01) 1px, transparent 1px), /* Subtle vertical lines */
+                    linear-gradient(to bottom, rgba(0, 194, 255, 0.01) 1px, transparent 1px); /* Subtle horizontal lines */
+            background-size: 30px 30px; /* Smaller grid size */
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        /* Styles for the scroll-to-top button */
+        #scrollToTopBtn {
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed position on screen */
+            bottom: 20px; /* 20px from bottom */
+            right: 30px; /* 30px from right */
+            z-index: 99; /* Ensures it's above other elements */
+            border: none; /* No border */
+            outline: none; /* No outline on focus */
+            background-color: #00C2FF; /* Accent color */
+            color: #0A192F; /* Dark text for contrast */
+            cursor: pointer; /* Pointer cursor */
+            padding: 15px; /* Padding */
+            border-radius: 50%; /* Circular button */
+            font-size: 18px; /* Font size */
+            box-shadow: 0 4px 15px rgba(0, 194, 255, 0.5); /* Shadow with accent color */
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Smooth transition */
+        }
+
+        #scrollToTopBtn:hover {
+            background-color: #0099CC; /* Darker shade on hover */
+            transform: scale(1.05); /* Slight scale on hover */
+            box-shadow: 0 6px 20px rgba(0, 194, 255, 0.7);
+        }
+
+        /* Style for the main header with subtle gradient */
+        .header-style {
+            background: radial-gradient(circle at 50% 120%, rgba(0, 194, 255, 0.15) 0%, transparent 50%), #172A45; /* Subtle gradient at the bottom */
+            border-bottom-left-radius: 2rem; /* Rounded corners */
+            border-bottom-right-radius: 2rem;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 194, 255, 0.25); /* Pronounced shadow with subtle glow */
+        }
+
+        /* Style for content cards */
+        .content-card {
+            background-color: #172A45; /* Card background */
+            border-radius: 1.5rem; /* Rounded corners */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 5px rgba(0, 194, 255, 0.1); /* Shadow with subtle glow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 194, 255, 0.1); /* Subtle accent border */
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 0 8px rgba(0, 194, 255, 0.2);
+            border-color: rgba(0, 194, 255, 0.4); /* More visible border on hover */
+        }
+
+        /* Style for navigation buttons/links */
+        .nav-link-style {
+            background-color: transparent; /* Transparent background */
+            border-radius: 0.5rem; /* Slightly rounded */
+            padding: 0.75rem 1.5rem;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            border: 1px solid transparent; /* Initial transparent border */
+            position: relative; /* For the subtle "underline" effect */
+        }
+
+        .nav-link-style::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #00C2FF; /* Accent color */
+            transition: width 0.3s ease, left 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link-style:hover::after {
+            width: 80%; /* Expands to 80% width */
+        }
+
+        /* Style for section titles */
+        .section-title {
+            color: #00C2FF; /* Accent color for titles */
+            font-weight: 700; /* Bold */
+            letter-spacing: 0.08em; /* Subtle spacing for a modern look */
+            text-transform: uppercase; /* Uppercase for a more technical look */
+        }
+
+        /* Style for the download button */
+        .download-button {
+            display: inline-block;
+            background-color: #00C2FF; /* Accent color */
+            color: #0A192F; /* Dark text for contrast */
+            padding: 1rem 2.5rem;
+            border-radius: 0.75rem; /* Rounded corners */
+            font-size: 1.25rem; /* Larger font size */
+            font-weight: 600; /* Semi-bold */
+            text-decoration: none; /* No underline */
+            box-shadow: 0 4px 15px rgba(0, 194, 255, 0.5); /* Shadow with accent color */
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .download-button:hover {
+            background-color: #0099CC; /* Darker shade on hover */
+            transform: translateY(-3px); /* Slight lift on hover */
+            box-shadow: 0 6px 20px rgba(0, 194, 255, 0.7);
+        }
+    </style>
+</head>
+<body class="bg-elegant-dark-bg text-elegant-text-primary leading-relaxed">
+
+<!-- Encabezado de la página -->
+<header class="header-style p-8 text-center">
+    <div class="container mx-auto flex flex-col items-center">
+        <!-- Logo de NOVA -->
+        <img src="Astrosoft.jpg" alt="Logo de NOVA" class="h-24 w-24 md:h-32 md:w-32 mb-4 rounded-full shadow-elegant-card">
+        <!-- Título del Proyecto NOVA -->
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-2 text-elegant-text-primary">NOVA</h1>
+        <p class="text-xl md:text-3xl font-light text-elegant-text-secondary">Sistema de Registro de Alumnos para Talleres</p>
+    </div>
+</header>
+
+<!-- Barra de Navegación -->
+<nav class="bg-elegant-dark-bg py-4 shadow-elegant-header">
+    <div class="container mx-auto flex flex-col md:flex-row justify-center space-y-3 md:space-y-0 md:space-x-8">
+        <!-- Enlace para volver a la página principal de Astrosoft (o similar) -->
+        <a href="index.html#nuestros-productos" class="text-center text-xl font-semibold text-elegant-text-primary nav-link-style">← Volver a la Página Principal</a>
+    </div>
+</nav>
+
+<!-- Contenido principal de la página -->
+<main class="container mx-auto p-6 md:p-8 lg:p-10">
+
+    <!-- Sección de Descarga de la Aplicación -->
+    <section id="descarga" class="content-card p-6 md:p-8 lg:p-10 mb-8 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">⬇️ Descarga NOVA</h2>
+        <p class="text-lg leading-relaxed mb-8 text-elegant-text-primary">
+            Obtén la primera versión funcional de la aplicación de escritorio NOVA para Windows.
+        </p>
+        <!-- Enlace de descarga de la aplicación con estilo, apuntando a Google Drive -->
+        <a href="https://drive.google.com/uc?export=download&id=1z8Dcj4z6VfAbfwfylWl9je_okcs52hDd" class="download-button" download="NOVA_Setup.zip">
+            Descargar NOVA (.zip)
+        </a>
+        <p class="text-sm text-elegant-text-secondary mt-4">
+            (Haz clic en "Descargar NOVA" para obtener el archivo comprimido con el instalador. Asegúrate de que el enlace de Google Drive sea de acceso público.)
+        </p>
+    </section>
+
+    <!-- Sección de Objetivo Principal -->
+    <section id="objetivo" class="content-card p-6 md:p-8 lg:p-10 mb-8">
+        <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">🎯 Objetivo Principal</h2>
+        <p class="text-lg leading-relaxed text-elegant-text-primary">
+            NOVA está diseñada para ser una herramienta simple y eficaz para la gestión de inscripciones a talleres en instituciones educativas, centros comunitarios o cualquier organización que necesite una forma rápida de registrar y organizar a sus estudiantes. Su enfoque está en la facilidad de uso y en la funcionalidad principal de administrar la base de datos de alumnos y talleres de forma local.
+        </p>
+    </section>
+
+    <!-- Sección de Componentes del Sistema -->
+    <section id="componentes" class="content-card p-6 md:p-8 lg:p-10 mb-8">
+        <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">🧱 Componentes del Sistema</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+                <h3 class="text-xl font-semibold text-elegant-accent mb-2">Interfaz Gráfica (Windows Forms)</h3>
+                <p class="text-elegant-text-secondary">Una interfaz amigable para el registro y gestión de alumnos.</p>
+            </div>
+            <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+                <h3 class="text-xl font-semibold text-elegant-accent mb-2">Base de Datos Local (LocalDB)</h3>
+                <p class="text-elegant-text-secondary">Un sistema de almacenamiento de datos ligero y embebido.</p>
+            </div>
+            <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft col-span-1 md:col-span-2">
+                <h3 class="text-xl font-semibold text-elegant-accent mb-2">Módulo de Gestión de Alumnos</h3>
+                <ul class="list-disc list-inside ml-4 space-y-1 text-elegant-text-secondary">
+                    <li>Registro de nuevos alumnos con sus datos.</li>
+                    <li>Filtros por tipo de taller para una búsqueda eficiente.</li>
+                    <li>Opción para remover alumnos del registro.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Seguridad -->
+    <section id="seguridad" class="content-card p-6 md:p-8 lg:p-10 mb-8">
+        <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">🔐 Seguridad</h2>
+        <ul class="list-disc list-inside space-y-2 text-lg text-elegant-text-primary">
+            <li><strong class="text-elegant-accent">Integridad de Datos Local:</strong> La base de datos LocalDB asegura que la información de los alumnos se mantenga segura y accesible solo localmente en la computadora donde se instala la aplicación.</li>
+        </ul>
+    </section>
+
+    <!-- Sección de Tecnologías -->
+    <section id="tecnologias" class="content-card p-6 md:p-8 lg:p-10 mb-8">
+        <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">🧩 Tecnologías</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+                <h3 class="text-xl font-semibold text-elegant-accent mb-2">C# y .NET Core</h3>
+                <p class="text-elegant-text-secondary">Lenguaje de programación y framework principal.</p>
+            </div>
+            <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+                <h3 class="text-xl font-semibold text-elegant-accent mb-2">Windows Forms</h3>
+                <p class="text-elegant-text-secondary">Para la construcción de la interfaz gráfica de usuario.</p>
+            </div>
+            <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+                <h3 class="text-xl font-semibold text-elegant-accent mb-2">LocalDB</h3>
+                <p class="text-elegant-text-secondary">Para la gestión de la base de datos local.</p>
+            </div>
+            <div class="bg-elegant-dark-bg p-4 rounded-xl shadow-elegant-soft">
+                <h3 class="text-xl font-semibold text-elegant-accent mb-2">GitHub</h3>
+                <p class="text-elegant-text-secondary">Utilizado para el control de versiones del código fuente.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Tutorial de Uso -->
+    <section id="tutorial" class="content-card p-6 md:p-8 lg:p-10 mb-8">
+        <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">📺 Tutorial de Uso</h2>
+        <p class="text-lg leading-relaxed mb-4 text-elegant-text-primary">
+            Aquí podrás encontrar un video tutorial detallado sobre cómo utilizar NOVA. ¡Pronto disponible!
+        </p>
+        <!-- Placeholder para el video de YouTube con la miniatura generada -->
+        <div class="relative w-full" style="padding-top: 56.25%; background-image: url('http://googleusercontent.com/image_generation_content/2'); background-size: cover; background-position: center; border-radius: 0.75rem; overflow: hidden;">
+            <iframe class="absolute top-0 left-0 w-full h-full rounded-lg shadow-elegant-soft"
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"> <!-- ¡IMPORTANTE! Reemplaza esta URL con la URL de incrustación real de tu video de YouTube -->
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+            </iframe>
+        </div>
+        <p class="text-sm text-elegant-text-secondary mt-4 text-center">
+            (El video tutorial de uso de NOVA se cargará aquí próximamente.)
+        </p>
+    </section>
+
+    <!-- Sección de Estado Actual -->
+    <section id="estado-actual" class="content-card p-6 md:p-8 lg:p-10 mb-8">
+        <h2 class="text-3xl md:text-4xl font-bold section-title mb-6">✅ Estado Actual</h2>
+        <p class="text-lg leading-relaxed mb-4 text-elegant-text-primary">
+            El proyecto NOVA se encuentra en el siguiente estado de desarrollo:
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-lg text-elegant-text-secondary">
+            <li>La primera versión de la aplicación está completamente funcional.</li>
+            <li>Las funciones de registro, filtrado y remoción de alumnos están implementadas.</li>
+            <li>El código fuente está disponible en el repositorio de GitHub.</li>
+        </ul>
+    </section>
+
+</main>
+
+<!-- Botón para volver arriba -->
+<button onclick="topFunction()" id="scrollToTopBtn" title="Volver arriba">↑</button>
+
+<!-- Pie de página -->
+<footer class="bg-elegant-card-bg text-elegant-text-secondary p-6 text-center rounded-t-2xl shadow-elegant-card border-t border-elegant-accent border-opacity-30">
+    <div class="container mx-auto">
+        <p>© 2025 Astrosoft. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<script>
+    // Get the button
+    let mybutton = document.getElementById("scrollToTopBtn");
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    }
+</script>
+
+</body>
+</html>
